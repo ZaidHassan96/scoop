@@ -18,16 +18,17 @@ const ArticlesList = ({ getArticles, setGetArticles }) => {
     } else {
       return articles.map((article) => (
         <li className="card" key={article.article_id}>
+          <div>
+            <h2>{article.title}</h2>
+            <img
+              src={article.article_img_url}
+              alt={`Image off ${article.title}`}
+              className="img"
+            />
+            <h3>{new Date(article.created_at).toUTCString()}</h3>
+          </div>
           <Link to={`/articles/${article.article_id}`}>
-            <div>
-              <h2>{article.title}</h2>
-              <img
-                src={article.article_img_url}
-                alt={`Image off ${article.title}`}
-                className="img"
-              />
-              <h3>{new Date(article.created_at).toUTCString()}</h3>
-            </div>
+            <p>Click to read ⏎</p>
           </Link>
         </li>
       ));
