@@ -58,10 +58,28 @@ body {
   margin-right: 50px;
 }
 
-h2 {
+/* h2 {
   display: flex;
 }
 
 h3 {
   text-align: left;
+} */
+
+.comment {
+  display: flex;
+}
+
+.comment-button {
+  border: grey solid;
+  border-radius: 10px 0px 10px 0px;
+  display: inline-block;
+  background-color: grey;
+  padding: 10px;
+  font-size: 15px;
+}
+
+.comment-list {
+  border-bottom: grey solid;
+  list-style: none;
 }
