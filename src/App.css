@@ -77,9 +77,27 @@ h3 {
   background-color: grey;
   padding: 10px;
   font-size: 15px;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+.comment-button:hover {
+  border-color: #ffa264;
 }
 
 .comment-list {
   border-bottom: grey solid;
   list-style: none;
+}
+
+.comment-votes {
+  display: flex;
+  justify-content: center;
+}
+
+.votes-section {
+  display: flex;
+  align-items: center;
 }

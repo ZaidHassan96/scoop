@@ -23,4 +23,17 @@ const fetchArticle = (article_id) => {
       return response.data.article;
     });
 };
-export { fetchArticles, fetchComments, fetchArticle };
+
+const changeVotesNumber = (article_id, change) => {
+  let newVote = { inc_votes: 0 };
+  if (change === "increment") {
+    newVote = { inc_votes: +1 };
+  } else if (change === "decrement") {
+    newVote = { inc_votes: -1 };
+  }
+  return axios.patch(
+    `https://news-v9aq.onrender.com/api/articles/${article_id}`,
+    newVote
+  );
+};
+export { fetchArticles, fetchComments, fetchArticle, changeVotesNumber };
