@@ -1,14 +1,15 @@
-import React, { useEffect } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { fetchArticles, fetchComments } from "../../api";
 
 const ArticlesList = ({ getArticles, setGetArticles }) => {
+  const [isLoading, setisLoading] = useState(true);
   useEffect(() => {
-    axios
-      .get("https://news-v9aq.onrender.com/api/articles")
-      .then((response) => {
-        setGetArticles(response.data.articles);
-      });
+    setisLoading(true);
+    fetchArticles().then((articles) => {
+      setGetArticles(articles);
+      setisLoading(false);
+    });
   }, [setGetArticles]);
 
   const makeListItems = (articles) => {
@@ -25,13 +26,17 @@ const ArticlesList = ({ getArticles, setGetArticles }) => {
                 alt={`Image off ${article.title}`}
                 className="img"
               />
-              <h3>{new Date(article.created_at).toLocaleDateString()}</h3>
+              <h3>{new Date(article.created_at).toUTCString()}</h3>
             </div>
           </Link>
         </li>
       ));
     }
   };
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div>

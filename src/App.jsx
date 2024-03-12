@@ -25,6 +25,7 @@ function App() {
           }
         />
         <Route path="/articles/:article_id" element={<ArticlePage />} />
+        
       </Routes>
     </>
   );
