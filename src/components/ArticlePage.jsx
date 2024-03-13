@@ -1,23 +1,38 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Comments from "./Comments";
-import { fetchArticle, changeVotesNumber } from "../../api";
+import {
+  fetchArticle,
+  changeVotesNumber,
+  fetchUsers,
+  postComment,
+} from "../../api";
 
 const ArticlePage = () => {
   const [getArticle, setGetArticle] = useState([]);
   const [showComments, setShowComments] = useState(false);
   const [isLoading, setisLoading] = useState(true);
   const [err, setErr] = useState(null);
+  const [commentInput, setCommentInput] = useState({
+    username: "",
+    body: "",
+  });
+  const [comments, setComments] = useState([]);
+  const [users, setUsers] = useState([]);
 
   const { article_id } = useParams();
 
   useEffect(() => {
     setisLoading(true);
-    fetchArticle(article_id).then((article) => {
-      setGetArticle(article);
-      setisLoading(false);
-    });
+    fetchArticle(article_id)
+      .then((article) => {
+        setGetArticle(article);
+        return fetchUsers();
+      })
+      .then((usersList) => {
+        setUsers(usersList);
+        setisLoading(false);
+      });
   }, [article_id]);
 
   const toggleComments = () => {
@@ -47,6 +62,46 @@ const ArticlePage = () => {
     }
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (!commentInput.username || !commentInput.body) {
+      return;
+    }
+
+    // for (let key in commentInput) {
+    //   if (!commentInput[key]) {
+    //     return console.log(`please enter ${key}`);
+    //   }
+    // }
+
+    const temporaryComment = {
+      author: commentInput.username,
+      body: commentInput.body,
+      created_at: new Date().toISOString(),
+      comment_id: `temp_${Math.floor(Math.random() * 1000000)}`,
+    };
+    setComments((currComments) => {
+      if (!users.includes(temporaryComment.author)) {
+        setErr("Sorry the user for the provided username does not exist");
+        setShowComments(false);
+      }
+
+      return [temporaryComment, ...currComments];
+    });
+
+    setShowComments(true);
+    setErr(null);
+
+    postComment(commentInput, article_id)
+  };
+  const handleChange = (event) => {
+    const { id, value } = event.target;
+    setCommentInput((prevInputs) => ({
+      ...prevInputs,
+      [id]: value,
+    }));
+  };
+
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -61,13 +116,34 @@ const ArticlePage = () => {
       />
       <p>{getArticle.body}</p>
       <div className="comment-votes">
-        <h3
-          onClick={toggleComments}
-          className="comment-button"
-          style={{ marginRight: "40px" }}
-        >
-          {showComments ? "Hide Comments↑" : "Show Comments↓"}
-        </h3>
+        <form className="comment-button" onSubmit={handleSubmit}>
+          <p>Add Comment</p>
+          <label htmlFor="username"></label>
+          <input
+            type="text"
+            id="username"
+            placeholder="username"
+            value={commentInput.username}
+            onChange={handleChange}
+          />
+          <br />
+          <label htmlFor="comment"></label>
+          <input
+            type="text"
+            id="body"
+            placeholder="comment"
+            value={commentInput.body}
+            onChange={handleChange}
+          />
+          <br />
+          <button
+            type="submit"
+            disabled={!commentInput.username || !commentInput.body || isLoading}
+          >
+            {isLoading ? "Posting..." : "Post Comment"}
+          </button>
+        </form>
+
         <div className="votes-section">
           <h3 style={{ marginLeft: "40px" }}>Votes: {getArticle.votes}</h3>
           <p
@@ -92,10 +168,24 @@ const ArticlePage = () => {
           >
             ▽
           </p>
-          {err ? <p>{err}</p> : null}
         </div>
       </div>
-      {showComments && <Comments article_id={article_id} />}
+      {err ? <p>{err}</p> : null}
+      <h3
+        onClick={toggleComments}
+        className="comment-button"
+        style={{ marginRight: "40px" }}
+      >
+        {showComments ? "Hide Comments↑" : "Show Comments↓"}
+      </h3>
+
+      {showComments && (
+        <Comments
+          article_id={article_id}
+          comments={comments}
+          setComments={setComments}
+        />
+      )}
     </>
   );
 };

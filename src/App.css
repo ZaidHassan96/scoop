@@ -1,5 +1,5 @@
 body {
-  background-color: rgb(255, 251, 245);
+  background-image: linear-gradient(to bottom, #ffdac7, #ffffff);
 }
 
 #root {
@@ -7,6 +7,7 @@ body {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background-image: linear-gradient(to bottom, #f5d3a7, #f6ba67);
 }
 
 .logo {
@@ -69,6 +70,11 @@ h3 {
 .comment {
   display: flex;
 }
+.latest-comment {
+  border: solid #ffa264;
+  transition: border 0.5s ease;
+  list-style: none;
+}
 
 .comment-button {
   border: grey solid;
@@ -82,6 +88,8 @@ h3 {
   font-family: inherit;
   cursor: pointer;
   transition: border-color 0.25s;
+  margin-top: 75px;
+  margin-left: 50px;
 }
 .comment-button:hover {
   border-color: #ffa264;
@@ -100,4 +108,14 @@ h3 {
 .votes-section {
   display: flex;
   align-items: center;
+}
+
+form {
+  margin: 10px;
+}
+
+.temporary-comment {
+  border: 1px solid transparent; /* Initial border style */
+  transition: border-color 0.3s ease; /* Border transition effect */
+  /* Add any other styles specific to temporary comments */
 }
