@@ -43,10 +43,18 @@ function App() {
           }
         />
         <Route
+          path="/articles/:topic"
+          element={
+            <ArticlesList
+              getArticles={getArticles}
+              setGetArticles={setGetArticles}
+            />
+          }
+        />
+        <Route
           path="/articles/:article_id"
           element={<ArticlePage users={users} />}
         />
-        {/* <Route path="/topics" element/> */}
       </Routes>
     </UserContext.Provider>
   );

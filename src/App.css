@@ -116,9 +116,9 @@ form {
 }
 
 .temporary-comment {
-  border: 1px solid transparent; /* Initial border style */
-  transition: border-color 0.3s ease; /* Border transition effect */
-  /* Add any other styles specific to temporary comments */
+  border: 1px solid transparent;
+  transition: border-color 0.3s ease; 
+
 }
 
 .delete-button {
