@@ -44,7 +44,6 @@ const postComment = (commentInput, article_id) => {
       commentInput
     )
     .then((response) => {
-      
       return response.data;
     });
 };
@@ -54,9 +53,24 @@ const fetchUsers = () => {
     .get(`https://news-v9aq.onrender.com/api/users`)
     .then((response) => {
       const users = response.data.users;
-      return users.map((user) => user.username);
+      return users;
     });
 };
+
+const deleteComment = (comment_id) => {
+  return axios.delete(
+    `https://news-v9aq.onrender.com/api/comments/${comment_id}`
+  );
+};
+
+const fetchTopics = () => {
+  return axios
+    .get(`https://news-v9aq.onrender.com/api/topics`)
+    .then((response) => {
+      return response.data;
+    });
+};
+
 export {
   fetchArticles,
   fetchComments,
@@ -64,4 +78,6 @@ export {
   changeVotesNumber,
   fetchUsers,
   postComment,
+  fetchTopics,
+  deleteComment,
 };

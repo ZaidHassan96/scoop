@@ -8,7 +8,7 @@ import {
   postComment,
 } from "../../api";
 
-const ArticlePage = () => {
+const ArticlePage = ({ users }) => {
   const [getArticle, setGetArticle] = useState([]);
   const [showComments, setShowComments] = useState(false);
   const [isLoading, setisLoading] = useState(true);
@@ -18,21 +18,17 @@ const ArticlePage = () => {
     body: "",
   });
   const [comments, setComments] = useState([]);
-  const [users, setUsers] = useState([]);
+  // const [users, setUsers] = useState([]);
 
   const { article_id } = useParams();
 
+  const userNameList = users.map((user) => user.username);
   useEffect(() => {
     setisLoading(true);
-    fetchArticle(article_id)
-      .then((article) => {
-        setGetArticle(article);
-        return fetchUsers();
-      })
-      .then((usersList) => {
-        setUsers(usersList);
-        setisLoading(false);
-      });
+    fetchArticle(article_id).then((article) => {
+      setGetArticle(article);
+      setisLoading(false);
+    });
   }, [article_id]);
 
   const toggleComments = () => {
@@ -68,12 +64,6 @@ const ArticlePage = () => {
       return;
     }
 
-    // for (let key in commentInput) {
-    //   if (!commentInput[key]) {
-    //     return console.log(`please enter ${key}`);
-    //   }
-    // }
-
     const temporaryComment = {
       author: commentInput.username,
       body: commentInput.body,
@@ -81,19 +71,28 @@ const ArticlePage = () => {
       comment_id: `temp_${Math.floor(Math.random() * 1000000)}`,
     };
     setComments((currComments) => {
-      if (!users.includes(temporaryComment.author)) {
-        setErr("Sorry the user for the provided username does not exist");
-        setShowComments(false);
-      }
-
       return [temporaryComment, ...currComments];
     });
 
-    setShowComments(true);
     setErr(null);
 
-    postComment(commentInput, article_id)
+    postComment(commentInput, article_id).catch((err) => {
+      if (!userNameList.includes(temporaryComment.author)) {
+        setErr("Sorry the user for the provided username does not exist");
+        setShowComments(false);
+      }
+      else if (err) {
+        setErr("Comment failed to post, please try again.");
+        setComments((prevComments) =>
+          prevComments.filter(
+            (comment) => comment.comment_id !== temporaryComment.comment_id
+          )
+        );
+      }
+    });
+    setShowComments(true);
   };
+
   const handleChange = (event) => {
     const { id, value } = event.target;
     setCommentInput((prevInputs) => ({
@@ -170,7 +169,7 @@ const ArticlePage = () => {
           </p>
         </div>
       </div>
-      {err ? <p>{err}</p> : null}
+      {err ? <p style={{ color: "red" }}>{err}</p> : null}
       <h3
         onClick={toggleComments}
         className="comment-button"
@@ -184,6 +183,10 @@ const ArticlePage = () => {
           article_id={article_id}
           comments={comments}
           setComments={setComments}
+          showComments={showComments}
+          setShowComments={setShowComments}
+          err={err}
+          setErr={setErr}
         />
       )}
     </>

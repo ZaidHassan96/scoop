@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchArticles, fetchComments } from "../../api";
+import { fetchArticles } from "../../api";
 
 const ArticlesList = ({ getArticles, setGetArticles }) => {
   const [isLoading, setisLoading] = useState(true);

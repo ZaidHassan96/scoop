@@ -1,5 +1,5 @@
 body {
-  background-image: linear-gradient(to bottom, #ffdac7, #ffffff);
+  background-image: linear-gradient(to bottom, #f5d3a7, #f6ba67);
 }
 
 #root {
@@ -69,6 +69,7 @@ h3 {
 
 .comment {
   display: flex;
+  justify-content: space-between;
 }
 .latest-comment {
   border: solid #ffa264;
@@ -118,4 +119,16 @@ form {
   border: 1px solid transparent; /* Initial border style */
   transition: border-color 0.3s ease; /* Border transition effect */
   /* Add any other styles specific to temporary comments */
+}
+
+.delete-button {
+  justify-content: right;
+  border: red solid;
+  background-color: red;
+  border-radius: 10px 0px 10px 0px;
+  cursor: pointer;
+}
+
+.author-time {
+  display: flex;
 }
