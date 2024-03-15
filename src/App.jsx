@@ -52,6 +52,10 @@ function App() {
           }
         />
         <Route
+          path="/articles/:topic/:article_id"
+          element={<ArticlePage users={users} />}
+        />
+         <Route
           path="/articles/:article_id"
           element={<ArticlePage users={users} />}
         />

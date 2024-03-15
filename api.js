@@ -1,8 +1,19 @@
 import axios from "axios";
 
-const fetchArticles = () => {
+const fetchArticles = ({sortBy, sortOrder}) => {
+  console.log(sortBy);
+  let url = "https://news-v9aq.onrender.com/api/articles"
+  if (sortBy){
+    url += `?sort_by=${sortBy}`
+    if (sortOrder){
+      url += `&order=${sortOrder}`
+    }
+    else if (sortOrder){
+      url += `?sortOrder=${sortOrder}`
+    }
+  }
   return axios
-    .get("https://news-v9aq.onrender.com/api/articles")
+    .get(url)
     .then((response) => {
       return response.data.articles;
     });
