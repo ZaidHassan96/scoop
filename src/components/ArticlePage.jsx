@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Comments from "./Comments";
-import {
-  fetchArticle,
-  changeVotesNumber,
-  fetchUsers,
-  postComment,
-} from "../../api";
+import { fetchArticle, changeVotesNumber, postComment } from "../../api";
 
 const ArticlePage = ({ users }) => {
+  console.log("im in article page");
   const [getArticle, setGetArticle] = useState([]);
   const [showComments, setShowComments] = useState(false);
   const [isLoading, setisLoading] = useState(true);
@@ -80,8 +76,7 @@ const ArticlePage = ({ users }) => {
       if (!userNameList.includes(temporaryComment.author)) {
         setErr("Sorry the user for the provided username does not exist");
         setShowComments(false);
-      }
-      else if (err) {
+      } else if (err) {
         setErr("Comment failed to post, please try again.");
         setComments((prevComments) =>
           prevComments.filter(
