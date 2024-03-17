@@ -1,22 +1,18 @@
 import axios from "axios";
 
-const fetchArticles = ({sortBy, sortOrder}) => {
-  console.log(sortBy);
-  let url = "https://news-v9aq.onrender.com/api/articles"
-  if (sortBy){
-    url += `?sort_by=${sortBy}`
-    if (sortOrder){
-      url += `&order=${sortOrder}`
-    }
-    else if (sortOrder){
-      url += `?sortOrder=${sortOrder}`
+const fetchArticles = ({ sortBy, sortOrder }) => {
+  let url = "https://news-v9aq.onrender.com/api/articles";
+  if (sortBy) {
+    url += `?sort_by=${sortBy}`;
+    if (sortOrder) {
+      url += `&order=${sortOrder}`;
+    } else if (sortOrder) {
+      url += `?sortOrder=${sortOrder}`;
     }
   }
-  return axios
-    .get(url)
-    .then((response) => {
-      return response.data.articles;
-    });
+  return axios.get(url).then((response) => {
+    return response.data.articles;
+  });
 };
 
 const fetchComments = (article_id) => {

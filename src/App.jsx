@@ -8,8 +8,10 @@ import ArticlePage from "./components/ArticlePage";
 import { UserContext } from "./contexts/User";
 import Login from "./components/Login";
 import { fetchUsers } from "../api";
+import NotFound from "./components/NotFound";
 
 function App() {
+  const [err, setErr] = useState(null);
   const [getArticles, setGetArticles] = useState([]);
   const [loggedInUser, setLoggedInUser] = useState({
     username: "tickle122",
@@ -24,6 +26,10 @@ function App() {
       setUsers(usersList);
     });
   }, []);
+
+  if (err) {
+    return <h1>{err}</h1>;
+  }
   return (
     <UserContext.Provider
       value={{ loggedInUser: loggedInUser, setLoggedInUser: setLoggedInUser }}
@@ -31,6 +37,7 @@ function App() {
       <h1>Scoop</h1>
       <Navigation />
       <Routes>
+        <Route path="*" element={<NotFound />} />
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login users={users} />} />
         <Route
@@ -39,25 +46,29 @@ function App() {
             <ArticlesList
               getArticles={getArticles}
               setGetArticles={setGetArticles}
+              err={err}
+              setErr={setErr}
             />
           }
         />
         <Route
-          path="/articles/:topic"
+          path="/articles/topic/:topic"
           element={
             <ArticlesList
               getArticles={getArticles}
               setGetArticles={setGetArticles}
+              err={err}
+              setErr={setErr}
             />
           }
         />
-        <Route
+        {/* <Route
           path="/articles/:topic/:article_id"
           element={<ArticlePage users={users} />}
-        />
-         <Route
+        /> */}
+        <Route
           path="/articles/:article_id"
-          element={<ArticlePage users={users} />}
+          element={<ArticlePage users={users} err={err} setErr={setErr} />}
         />
       </Routes>
     </UserContext.Provider>
