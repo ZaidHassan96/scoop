@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { fetchArticles } from "../../api";
 
-const ArticlesList = ({ getArticles, setGetArticles }) => {
+const ArticlesList = ({ getArticles, setGetArticles, err, setErr }) => {
   const [isLoading, setisLoading] = useState(true);
   const [sortBy, SetSortBy] = useState("created_at");
   const [sortOrder, setSortOrder] = useState("desc");
@@ -10,12 +10,20 @@ const ArticlesList = ({ getArticles, setGetArticles }) => {
 
   useEffect(() => {
     setisLoading(true);
-    fetchArticles({ sortBy, sortOrder }).then((articles) => {
-      console.log(sortBy);
-      setGetArticles(articles);
-      setisLoading(false);
-    });
-  }, [setGetArticles, sortBy, sortOrder]);
+    fetchArticles({ sortBy, sortOrder })
+      .then((articles) => {
+        setGetArticles(articles);
+        setisLoading(false);
+        if (topic && articles.some(article => article.topic === topic)) {
+          setErr(null);
+        } else if (topic) {
+          setErr("Topic not found");
+        }
+      })
+      .catch((err) => {
+        setisLoading(false);
+      });
+  }, [setGetArticles, sortBy, sortOrder, topic]);
 
   const handleSortChange = (event) => {
     const { value } = event.target;
@@ -51,7 +59,7 @@ const ArticlesList = ({ getArticles, setGetArticles }) => {
       const topicArticles = getArticles.filter(
         (article) => article.topic === topic
       );
-      // console.log(topicArticles);
+
       return topicArticles.map((article) => (
         <li className="card" key={article.article_id}>
           <div>
@@ -63,7 +71,7 @@ const ArticlesList = ({ getArticles, setGetArticles }) => {
             />
             <h3>{new Date(article.created_at).toUTCString()}</h3>
           </div>
-          <Link to={`/articles/${topic}/${article.article_id}`}>
+          <Link to={`/articles/${article.article_id}`}>
             <p>Click to read ⏎</p>
           </Link>
         </li>

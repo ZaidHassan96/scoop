@@ -16,7 +16,7 @@ const Topics = () => {
       <ul>
         {topics.map((topic) => (
           <li key={topic.slug} style={{ listStyle: "none" }}>
-            <Link to={`/articles/${topic.slug}`}>{topic.slug}</Link>
+            <Link to={`/articles/topic/${topic.slug}`}>{topic.slug}</Link>
           </li>
         ))}
       </ul>

@@ -3,12 +3,11 @@ import { useParams } from "react-router-dom";
 import Comments from "./Comments";
 import { fetchArticle, changeVotesNumber, postComment } from "../../api";
 
-const ArticlePage = ({ users }) => {
-  console.log("im in article page");
+const ArticlePage = ({ users, err, setErr }) => {
   const [getArticle, setGetArticle] = useState([]);
   const [showComments, setShowComments] = useState(false);
   const [isLoading, setisLoading] = useState(true);
-  const [err, setErr] = useState(null);
+  const [errArticle, setErrArticle] = useState(null);
   const [commentInput, setCommentInput] = useState({
     username: "",
     body: "",
@@ -21,10 +20,17 @@ const ArticlePage = ({ users }) => {
   const userNameList = users.map((user) => user.username);
   useEffect(() => {
     setisLoading(true);
-    fetchArticle(article_id).then((article) => {
-      setGetArticle(article);
-      setisLoading(false);
-    });
+    fetchArticle(article_id)
+      .then((article) => {
+        setGetArticle(article);
+        setisLoading(false);
+      })
+      .catch((err) => {
+        console.log(err.response.data.msg);
+        setErr("Article does not exist");
+        setisLoading(false);
+      });
+    setErr(null);
   }, [article_id]);
 
   const toggleComments = () => {
@@ -35,21 +41,21 @@ const ArticlePage = ({ users }) => {
     if (event.target.innerText === "△") {
       setGetArticle((currArticle) => {
         const updatedArticle = { ...currArticle, votes: getArticle.votes + 1 };
-        setErr(null);
+        setErrArticle(null);
         return updatedArticle;
       });
 
       changeVotesNumber(article_id, "increment").catch((err) => {
-        setErr("Vote not applied please try again");
+        setErrArticle("Vote not applied please try again");
       });
     } else if (event.target.innerText === "▽") {
       setGetArticle((currArticle) => {
         const updatedArticle = { ...currArticle, votes: getArticle.votes - 1 };
-        setErr(null);
+        setErrArticle(null);
         return updatedArticle;
       });
       changeVotesNumber(article_id, "decrement").catch(() => {
-        setErr("Vote not applied please try again");
+        setErrArticle("Vote not applied please try again");
       });
     }
   };
@@ -70,14 +76,16 @@ const ArticlePage = ({ users }) => {
       return [temporaryComment, ...currComments];
     });
 
-    setErr(null);
+    setErrArticle(null);
 
     postComment(commentInput, article_id).catch((err) => {
       if (!userNameList.includes(temporaryComment.author)) {
-        setErr("Sorry the user for the provided username does not exist");
+        setErrArticle(
+          "Sorry the user for the provided username does not exist"
+        );
         setShowComments(false);
       } else if (err) {
-        setErr("Comment failed to post, please try again.");
+        setErrArticle("Comment failed to post, please try again.");
         setComments((prevComments) =>
           prevComments.filter(
             (comment) => comment.comment_id !== temporaryComment.comment_id
@@ -164,7 +172,7 @@ const ArticlePage = ({ users }) => {
           </p>
         </div>
       </div>
-      {err ? <p style={{ color: "red" }}>{err}</p> : null}
+      {errArticle ? <p style={{ color: "red" }}>{errArticle}</p> : null}
       <h3
         onClick={toggleComments}
         className="comment-button"
@@ -180,8 +188,8 @@ const ArticlePage = ({ users }) => {
           setComments={setComments}
           showComments={showComments}
           setShowComments={setShowComments}
-          err={err}
-          setErr={setErr}
+          errArticle={errArticle}
+          setErrArticle={setErrArticle}
         />
       )}
     </>

@@ -8,8 +8,8 @@ const Comments = ({
   setComments,
   comments,
   showComments,
-  err,
-  setErr,
+  errArticle,
+  setErrArticle,
 }) => {
   const [isLoading, setisLoading] = useState(true);
   const { loggedInUser } = useContext(UserContext);
@@ -30,14 +30,14 @@ const Comments = ({
 
       deleteComment(comment_id)
         .then(() => {
-          setErr(null);
+          setErrArticle(null);
           setIsCommentDeleted(true);
           setComments((prevComments) =>
             prevComments.filter((comment) => comment.comment_id !== comment_id)
           );
         })
         .catch(() => {
-          setErr("please try again comment not deleted");
+          setErrArticle("please try again comment not deleted");
         });
     }
   };
@@ -54,8 +54,8 @@ const Comments = ({
             {isCommentDeleted && deletedCommentId === comment.comment_id && (
               <p>Comment deleted!</p>
             )}
-            {err && deletedCommentId === comment.comment_id && (
-              <p style={{ color: "red" }}>{err}</p>
+            {errArticle && deletedCommentId === comment.comment_id && (
+              <p style={{ color: "red" }}>{errArticle}</p>
             )}
             <h3>{comment.body}</h3>
             <div className="comment">
