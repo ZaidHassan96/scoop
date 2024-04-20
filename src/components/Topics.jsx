@@ -2,21 +2,25 @@ import React, { useEffect, useState } from "react";
 import { fetchTopics } from "../../api";
 import { Link } from "react-router-dom";
 
-const Topics = () => {
-  const [topics, SetTopics] = useState([]);
+const Topics = (topics, SetTopics) => {
 
-  useEffect(() => {
-    fetchTopics().then((topics) => {
-      SetTopics(topics.topics);
-    });
-  }, []);
+  const topicsArr = topics.topics.topics
+  console.log(topicsArr.topics);
+
 
   return (
     <div className="topics-menu">
       <ul>
-        {topics.map((topic) => (
-          <li key={topic.slug} style={{ listStyle: "none" }}>
-            <Link to={`/articles/topic/${topic.slug}`}>{topic.slug}</Link>
+        <li>
+          <Link to="/articles" className="topic">
+            All
+          </Link>
+        </li>
+        {topicsArr.topics.map((topic) => (
+          <li key={topic.slug}>
+            <Link to={`/articles?topic=${topic.slug}`} className="topic">
+              {topic.slug[0].toUpperCase() + topic.slug.slice(1)}
+            </Link>
           </li>
         ))}
       </ul>

@@ -1,16 +1,22 @@
 import axios from "axios";
 
-const fetchArticles = ({ sortBy, sortOrder }) => {
-  let url = "https://news-v9aq.onrender.com/api/articles";
-  if (sortBy) {
-    url += `?sort_by=${sortBy}`;
-    if (sortOrder) {
-      url += `&order=${sortOrder}`;
-    } else if (sortOrder) {
-      url += `?sortOrder=${sortOrder}`;
-    }
+const newsApi = axios.create({
+  baseURL: "https://news-v9aq.onrender.com/api",
+});
+
+const fetchArticles = (topic, sortBy, sortOrder, limit ) => {
+  let url = `/articles?sort_by=${sortBy}&order=${sortOrder}`;
+  if (topic) {
+    url += `&topic=${topic}`
   }
-  return axios.get(url).then((response) => {
+
+  if (limit) {
+    url += `&limit=${limit}`
+  }
+  console.log(url);
+
+  return newsApi.get(url).then((response) => {
+ console.log(response);
     return response.data.articles;
   });
 };
@@ -44,11 +50,15 @@ const changeVotesNumber = (article_id, change) => {
   );
 };
 
-const postComment = (commentInput, article_id) => {
+const postComment = (commentInput, loggedInUser, article_id) => {
+  const commentData = {
+    username: loggedInUser.username,
+    body: commentInput,
+  };
   return axios
     .post(
       `https://news-v9aq.onrender.com/api/articles/${article_id}/comments`,
-      commentInput
+      commentData
     )
     .then((response) => {
       return response.data;

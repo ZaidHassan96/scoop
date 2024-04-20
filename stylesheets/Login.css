@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.user-card {
+  padding: 0.5em;
+  border-bottom: 1px solid rgb(194, 194, 194);
+  border-top: 1px solid rgb(194, 194, 194);
+  border-radius: 10px;
+  margin: 0.5em 0.25em;
+  width: 8em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  img {
+    background-color: white;
+    border-radius: 50%;
+    width: 5em;
+    height: 5em;
+    object-fit: contain;
+    padding: 1em;
+  }
+  p {
+    text-align: center;
+    font-size: 1em;
+    font-weight: 300;
+  }
+
+  .login {
+    margin-top: auto;
+  }
+
+  button:hover {
+    text-decoration: underline;
+  }
+}

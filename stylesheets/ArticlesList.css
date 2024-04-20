@@ -1,0 +1,88 @@
+.articles-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.articles-list {
+  display: flex;
+  flex-wrap: wrap; /* Allow articles to wrap to the next line */
+  justify-content: center; /* Center the articles horizontally */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+}
+
+.article-group {
+  /* margin-top: 20px;
+  display: grid;
+  margin-bottom: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 100px 100px;
+  grid-gap: 20px; */
+  display: flex; /* Use flexbox for layout */
+  flex-wrap: wrap; /* Allow articles to wrap within the group */
+  justify-content: center; /* Center the articles horizontally */
+  border-bottom: rgba(0, 0, 0, 0.033) solid;
+}
+
+.card {
+  position: relative;
+  align-items: stretch; /* Align content vertically */
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 20px;
+  border-bottom-left-radius: 50px 10px;
+  border-bottom-right-radius: 50px 10px;
+  border-top-left-radius: 50px 5px;
+  border-top-right-radius: 50px 5px;
+  flex: 1 1 160px;
+  text-align: left;
+  overflow: hidden;
+  padding: 4px;
+  border-bottom: rgba(0, 0, 0, 0.312) solid;
+  /* border-top: rgba(0, 0, 0, 0.312) solid; */
+  background-color: rgba(168, 168, 168, 0);
+  text-decoration: none;
+}
+
+.card:hover {
+  box-shadow: 0px 0px 20px 5px hsl(0deg 0% 0% / 0.5);
+  background-color: rgba(137, 137, 137, 0.185);
+
+  border: 1px solid black;
+  transition: 0.3s;
+  transition-timing-function: linear;
+  text-decoration: underline;
+}
+
+.card img {
+  width: 100%; /* Make the image full width inside its flex item */
+  height: auto; /* Ensure the image height adjusts proportionally */
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+.card h2 {
+  font-size: 20px;
+  text-align: center;
+  text-overflow: ellipsis;
+}
+.card h3 {
+  font-size: 15px;
+  text-align: center;
+}
+.card p {
+  font-size: 15px;
+  text-align: center;
+}
+.link-container {
+  color: black;
+  text-decoration: none;
+}
+
+.votes-comments-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+}

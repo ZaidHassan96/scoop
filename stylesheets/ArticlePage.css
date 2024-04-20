@@ -1,0 +1,86 @@
+.page {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.article-main {
+  flex: 1 1 auto; /* Flex-grow, flex-shrink, flex-basis */
+  max-width: 100%;
+}
+.article {
+  display: flex;
+  flex-direction: column;
+
+  text-align: left;
+  flex: 1 1 160px;
+}
+
+.article-body {
+  font-size: 17px;
+  text-align: left;
+  margin: 0; /* Shorthand for margin-left and margin-right */
+  line-height: 1.5;
+  width: 100%;
+  word-wrap: break-word; /* Allow long words to be broken and wrap */
+}
+.votes-section {
+  text-align: left;
+  display: flex;
+  align-items: center;
+}
+
+.comment-toggle {
+  margin-bottom: 10px;
+  margin-top: 10px;
+  font-size: larger;
+  font-style: italic;
+  color: rgb(77, 77, 75);
+}
+
+.comment-toggle:hover {
+  color: rgb(107, 193, 250);
+  cursor: pointer;
+}
+
+.article img {
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border-top-right-radius: 50px;
+  border-bottom-left-radius: 50px;
+  margin-left: 5px;
+}
+
+.image-article {
+  max-width: 720px;
+  height: auto;
+}
+
+.recent-article-column {
+  flex: 1 1 auto; /* Flex-grow, flex-shrink, flex-basis */
+  max-width: 30%;
+}
+
+/* @media screen and (min-width: 768px) {
+  .article-main,
+  .recent-article-column {
+    flex: 1 1 100%; /* Full width on smaller screens */
+/* max-width: 100%;
+  }
+} */
+@media screen and (min-width: 1010px) {
+  .page {
+    flex-direction: row; /* Change to row for larger screens */
+  }
+  .article-main {
+    flex: 0 0 70%; /* 70% width */
+    max-width: 70%;
+  }
+
+  .recent-article-column {
+    flex: 0 0 30%; /* 30% width */
+    max-width: 30%;
+  }
+}
