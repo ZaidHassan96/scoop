@@ -1,0 +1,28 @@
+button {
+  border: none;
+  font-weight: 400;
+  padding: 5px;
+  background-color: transparent;
+}
+
+
+.nav-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: solid rgb(147, 149, 151) 4px;
+  padding-bottom: 5px;
+}
+
+.profile-link {
+  color: black;
+  margin-right: 5px;
+  text-decoration: none;
+}
+
+.login-link {
+  color: black;
+  margin-right: 5px;
+  text-decoration: none;
+}

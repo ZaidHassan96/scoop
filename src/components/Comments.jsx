@@ -23,7 +23,6 @@ const Comments = ({
   const [isCommentDeleted, setIsCommentDeleted] = useState(false);
   const [deletedCommentId, setDeletedCommentId] = useState("");
   const commentsContainerRef = useRef(null);
-  console.log(loggedInUser);
 
   useEffect(() => {
     setisLoading(true);
@@ -40,9 +39,16 @@ const Comments = ({
   }, [comments]);
 
   const removeComment = (author, comment_id) => {
+    const prefix = "temp";
+    if (typeof comment_id === "string" && comment_id.startsWith(prefix)) {
+      setComments(
+        comments.filter((comment) => comment.comment_id !== comment_id)
+      );
+
+      return;
+    }
     if (loggedInUser.username === author) {
       setDeletedCommentId(comment_id);
-
       deleteComment(comment_id)
         .then(() => {
           setErrArticle(null);
@@ -61,8 +67,6 @@ const Comments = ({
     const { value } = event.target;
     setCommentInput(value);
   };
-
-  console.log(commentInput);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -87,11 +91,6 @@ const Comments = ({
     const userNameList = users.map((user) => user.username);
 
     postComment(commentInput, loggedInUser, article_id).catch((err) => {
-      // if (!userNameList.includes(temporaryComment.author)) {
-      //   setErrArticle(
-      //     "Sorry the user for the provided username does not exist"
-      //   );
-      // }
       if (err) {
         setErrArticle("Comment failed to post, please try again.");
         setComments((prevComments) =>
@@ -102,14 +101,17 @@ const Comments = ({
       }
     });
     setShowComments(true);
+    setCommentInput("");
   };
 
-  if(isLoading){
-    return <div className="loading">
-    <Spinner animation="border" variant="dark" />
-    <p>Loading...</p>
-    </div>
-}
+  if (isLoading) {
+    return (
+      <div className="loading">
+        <Spinner animation="border" variant="dark" />
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -118,46 +120,28 @@ const Comments = ({
           Add a comment below:
         </p>
         {errArticle ? <p style={{ color: "red" }}>{errArticle}</p> : null}
-        {/* <label htmlFor="username"></label> */}
-        {/* <input
-          type="text"
-          id="username"
-          placeholder="username"
-          value={commentInput.username}
-          onChange={handleChange}
-          style={{
-            width: "90%", // Set the width to 100% of its container
-            height: "15px", // Set the height to your desired value
-            padding: "10px", // Add padding to provide spacing inside the input
-            fontSize: "16px",
-            marginBottom: "10px",
-            // Set the font size to your desired value
-            // Add any other styles as needed
-          }}
-        /> */}
-        {/* <br /> */}
-        <label htmlFor="comment"></label>
+
+        <label htmlFor="body"></label>
         <input
           type="text"
           id="body"
+          autoComplete="off"
           value={commentInput}
           onChange={handleChange}
           style={{
             borderRadius: "7px",
-            width: "100%", // Set the width to 100% of its container
-            height: "20px", // Set the height to your desired value
-            padding: "15px", // Add padding to provide spacing inside the input
+            width: "100%",
+            height: "20px",
+            padding: "15px",
             fontSize: "16px",
             marginBottom: "10px",
-            // Set the font size to your desired value
-            // Add any other styles as needed
           }}
         />
         <br />
         <button
           type="submit"
           disabled={!commentInput || isLoading}
-          style={{ borderRadius: "7px" }}
+          className="post-comment-button"
         >
           {isLoading ? "Posting..." : "Post Comment"}
         </button>
@@ -167,7 +151,7 @@ const Comments = ({
           {comments.map((comment) => (
             <li key={comment.comment_id} className="comment-list">
               {isCommentDeleted && deletedCommentId === comment.comment_id && (
-                <p>Comment deleted!</p>
+                <p style={{ textAlign: "center" }}>Comment deleted!</p>
               )}
               {errArticle && deletedCommentId === comment.comment_id && (
                 <p style={{ color: "red" }}>{errArticle}</p>
@@ -175,25 +159,35 @@ const Comments = ({
 
               <div className="comments">
                 <div className="comment">
-                  <p style={{  display: "flex", justifyContent: "space-between" }}>{comment.author}     {loggedInUser && loggedInUser.username === comment.author && (
-                  <p
-                    className="delete-button"
-                    onClick={() =>
-                      removeComment(comment.author, comment.comment_id)
-                    }
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    Delete
-                  </p>
-                )}</p>
+                    <p>{comment.author}</p>
+
+                    {loggedInUser &&
+                      loggedInUser.username === comment.author && (
+                        <p
+                          className="delete-button"
+                          onClick={() =>
+                            removeComment(comment.author, comment.comment_id)
+                          }
+                        >
+                          Delete
+                        </p>
+                      )}
+                  </div>
                   <p>{new Date(comment.created_at).toUTCString()}</p>
                 </div>
-
-            
               </div>
-              <p style={{ backgroundColor: "white", borderRadius: "5px", padding: "5px"}}>
+              <p
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: "5px",
+                  padding: "5px",
+                }}
+              >
                 {comment.body}
               </p>
-              
             </li>
           ))}
         </ul>

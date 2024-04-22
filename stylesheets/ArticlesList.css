@@ -86,3 +86,13 @@
   justify-content: center;
   margin-top: auto;
 }
+
+select {
+  border-radius: 10px;
+  padding: 3px;
+}
+
+
+.articles-container {
+  background-color: rgb(255, 255, 255);
+}

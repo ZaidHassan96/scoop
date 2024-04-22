@@ -4,19 +4,17 @@ const newsApi = axios.create({
   baseURL: "https://news-v9aq.onrender.com/api",
 });
 
-const fetchArticles = (topic, sortBy, sortOrder, limit ) => {
+const fetchArticles = (topic, sortBy, sortOrder, limit) => {
   let url = `/articles?sort_by=${sortBy}&order=${sortOrder}`;
   if (topic) {
-    url += `&topic=${topic}`
+    url += `&topic=${topic}`;
   }
 
   if (limit) {
-    url += `&limit=${limit}`
+    url += `&limit=${limit}`;
   }
-  console.log(url);
 
   return newsApi.get(url).then((response) => {
- console.log(response);
     return response.data.articles;
   });
 };

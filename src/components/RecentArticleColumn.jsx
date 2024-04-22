@@ -20,13 +20,16 @@ const RecentArticleColumn = () => {
   useEffect(() => {
     getArticles();
   }, []);
-  console.log(recentArticles);
 
   return (
     <div className="recent-articles-container">
       <h1 className="highlight-title">Recent articles</h1>
       {recentArticles.map((article) => (
-        <Link to={`/articles/${article.article_id}`} style={{textDecoration: "none", color: "black"}}>
+        <Link
+          to={`/articles/${article.article_id}`}
+          style={{ textDecoration: "none", color: "black" }}
+          key={article.article_id}
+        >
           <div className="article-container" key={article.article_id}>
             <img src={article.article_img_url} alt="" />
             <div className="info">

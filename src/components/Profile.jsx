@@ -1,15 +1,31 @@
 import React, { useContext } from "react";
 import { UserContext } from "../contexts/User";
 import "../../stylesheets/Profile.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import ErrorPage from "./ErrorPage";
 
-const Profile = () => {
+const Profile = (users, err, setErr) => {
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
+  const { username } = useParams();
+
+  const userExists = () => {
+    const user = users.users.find((user) => {
+      return user.username.trim() === username.trim();
+    });
+
+    const exists = !!user; // Convert to boolean
+
+    return exists;
+  };
 
   const handleLogout = () => {
+    localStorage.removeItem("loggedInUser");
     setLoggedInUser(null);
   };
 
+  if (!userExists()) {
+    return <ErrorPage errMsg={`User does not exist`} />;
+  }
   return (
     <>
       {loggedInUser && ( // Check if loggedInUser exists

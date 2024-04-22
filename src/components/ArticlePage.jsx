@@ -7,10 +7,8 @@ import RecentArticleColumn from "./RecentArticleColumn";
 import "../../stylesheets/ArticlePage.css";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ModeCommentOutlinedIcon from "@mui/icons-material/ModeCommentOutlined";
-
-import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
-import ArrowDownwardOutlinedIcon from "@mui/icons-material/ArrowDownwardOutlined";
 import { Spinner } from "react-bootstrap";
+import ErrorPage from "./ErrorPage";
 
 const ArticlePage = ({ users, err, setErr }) => {
   const [getArticle, setGetArticle] = useState([]);
@@ -21,11 +19,10 @@ const ArticlePage = ({ users, err, setErr }) => {
   const [comments, setComments] = useState([]);
   const [voteButtonClicked, setVoteButtonClicked] = useState(false);
   const { loggedInUser } = useContext(UserContext);
-  // const [users, setUsers] = useState([]);
 
   const { article_id } = useParams();
 
-  const userNameList = users.map((user) => user.username);
+  // const userNameList = users.map((user) => user.username);
   useEffect(() => {
     setisLoading(true);
     fetchArticle(article_id)
@@ -34,8 +31,14 @@ const ArticlePage = ({ users, err, setErr }) => {
         setisLoading(false);
       })
       .catch((err) => {
-        console.log(err.response.data.msg);
-        setErr("Article does not exist");
+        if (err.response.status === 400) {
+          setErr(`Error ${err.response.status}: ${err.response.data.msg}`);
+        } else {
+          setErr(
+            `Error ${err.response.status}: Article ${err.response.data.msg}`
+          );
+        }
+
         setisLoading(false);
       });
     setErr(null);
@@ -47,29 +50,6 @@ const ArticlePage = ({ users, err, setErr }) => {
   const handlePostCommentClick = () => {
     document.getElementById("comment-form").scrollIntoView();
   };
-
-  // const changeVotes = (event) => {
-  //   if (event.target.innerText === "△") {
-  //     setGetArticle((currArticle) => {
-  //       const updatedArticle = { ...currArticle, votes: getArticle.votes + 1 };
-  //       setErrArticle(null);
-  //       return updatedArticle;
-  //     });
-
-  //     changeVotesNumber(article_id, "increment").catch((err) => {
-  //       setErrArticle("Vote not applied please try again");
-  //     });
-  //   } else if (event.target.innerText === "▽") {
-  //     setGetArticle((currArticle) => {
-  //       const updatedArticle = { ...currArticle, votes: getArticle.votes - 1 };
-  //       setErrArticle(null);
-  //       return updatedArticle;
-  //     });
-  //     changeVotesNumber(article_id, "decrement").catch(() => {
-  //       setErrArticle("Vote not applied please try again");
-  //     });
-  //   }
-  // };
 
   const changeVote = (event) => {
     if (!loggedInUser) {
@@ -100,6 +80,10 @@ const ArticlePage = ({ users, err, setErr }) => {
       return;
     }
   };
+
+  if (err) {
+    return <ErrorPage errMsg={err} />;
+  }
 
   if (isLoading) {
     return (
@@ -137,38 +121,6 @@ const ArticlePage = ({ users, err, setErr }) => {
               Posted {getArticle.created_at.slice(0, 10)}
             </p>
 
-            {/* <div className="votes-section">
-              <p style={{ fontSize: "20px", marginRight: "10px" }}>Vote: </p>
-              <button
-                style={{
-                  fontSize: "25px",
-                  color: "black",
-                  cursor: "pointer",
-                  userSelect: "none",
-                  borderRadius: "10px",
-                  marginRight: "5px",
-                  width: "40px",
-                }}
-                onClick={changeVotes}
-              >
-                △
-              </button>
-
-              <button
-                style={{
-                  fontSize: "25px",
-                  color: "black",
-                  cursor: "pointer",
-                  userSelect: "none",
-                  borderRadius: "10px",
-                  marginLeft: "5px",
-                  width: "40px",
-                }}
-                onClick={changeVotes}
-              >
-                ▽
-              </button>
-            </div> */}
             <div className="image-article">
               <img
                 src={getArticle.article_img_url}
@@ -206,7 +158,6 @@ const ArticlePage = ({ users, err, setErr }) => {
                     cursor: "pointer",
                   }}
                 >
-                  
                   <ModeCommentOutlinedIcon
                     style={{
                       fontSize: "35px",
@@ -229,9 +180,6 @@ const ArticlePage = ({ users, err, setErr }) => {
 
           {showComments && (
             <div className="comments">
-              {/* <h2 onClick={handlePostCommentClick} className="post-comment">
-            Post comment
-          </h2> */}
               <Comments
                 article_id={article_id}
                 comments={comments}

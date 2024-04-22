@@ -5,15 +5,14 @@ import ModeCommentOutlinedIcon from "@mui/icons-material/ModeCommentOutlined";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import "../../stylesheets/ArticlesList.css";
 import { Spinner } from "react-bootstrap";
+import ErrorPage from "./ErrorPage";
 
 const ArticlesList = ({ err, setErr, isLoading, setisLoading }) => {
   const [getArticles, setGetArticles] = useState([]);
   const [sortBy, SetSortBy] = useState("created_at");
   const [sortOrder, setSortOrder] = useState("desc");
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const topic = searchParams.get("topic");
-
-  console.log(topic);
 
   useEffect(() => {
     setisLoading(true);
@@ -21,7 +20,11 @@ const ArticlesList = ({ err, setErr, isLoading, setisLoading }) => {
       .then((articles) => {
         setGetArticles(articles);
         setisLoading(false);
+        let queryStr = `&sort_by=${sortBy}&order=${sortOrder}`;
+        setSearchParams(queryStr);
         if (topic && articles.some((article) => article.topic === topic)) {
+          let queryStr = `topic=${topic}&sort_by=${sortBy}&order=${sortOrder}`;
+          setSearchParams(queryStr);
           setErr(null);
         } else if (topic) {
           setErr("Topic not found");
@@ -66,10 +69,6 @@ const ArticlesList = ({ err, setErr, isLoading, setisLoading }) => {
                           className="img"
                         />
                         <h2>{groupedArticle.title}</h2>
-
-                        {/* <h3>
-                          {new Date(groupedArticle.created_at).toUTCString()}
-                        </h3> */}
 
                         <div className="votes-comments-icon">
                           <p style={{ marginRight: "10px" }}>
@@ -130,10 +129,6 @@ const ArticlesList = ({ err, setErr, isLoading, setisLoading }) => {
                             {groupedArticle.comment_count}
                           </p>
                         </div>
-
-                        {/* <h3>
-                        {new Date(groupedArticle.created_at).toUTCString()}
-                      </h3> */}
                       </Link>
                     ))}
                 </div>
@@ -143,6 +138,10 @@ const ArticlesList = ({ err, setErr, isLoading, setisLoading }) => {
       );
     }
   };
+
+  if (err) {
+    return <ErrorPage errMsg={err} />;
+  }
 
   if (isLoading) {
     return (
@@ -160,7 +159,7 @@ const ArticlesList = ({ err, setErr, isLoading, setisLoading }) => {
       </label>
       <select id="sortBy" value={sortBy} onChange={handleSortChange}>
         <option value="created_at">Date</option>
-        {/* <option value="commentCount">Comment Count</option> */}
+
         <option value="votes">Votes</option>
       </select>
       <label style={{ marginLeft: 10, marginRight: 5 }} htmlFor="sortOrder">

@@ -37,7 +37,6 @@ const Home = ({
         setisLoading(false);
       });
   }, [setGetArticles, sortBy, sortOrder, topic]);
-  console.log(getArticles);
 
   const top3Articles = getArticles
     .slice()
@@ -106,7 +105,11 @@ const Home = ({
         </Col>
         <Col className="home-text">
           <h2
-            style={{ fontFamily: "serif", textAlign: "center", fontSize: "40px" }}
+            style={{
+              fontFamily: "serif",
+              textAlign: "center",
+              fontSize: "40px",
+            }}
           >
             Loren Ipsum
           </h2>

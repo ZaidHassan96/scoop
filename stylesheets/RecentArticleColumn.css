@@ -14,9 +14,6 @@
   padding-right: 15px;
   margin-left: 0px;
 }
-.recent-articles-container h1 {
-  font-size: 40px;
-}
 
 .article-container {
   margin-bottom: 50px;
@@ -73,6 +70,8 @@
 
 .highlight-title {
   font-family: serif;
+  font-size: 35px;
+  margin-bottom: 20px;
 }
 
 li {

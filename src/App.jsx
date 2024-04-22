@@ -8,21 +8,15 @@ import ArticlePage from "./components/ArticlePage";
 import { UserContext } from "./contexts/User";
 import Login from "./components/Login";
 import { fetchTopics, fetchUsers } from "../api";
-import NotFound from "./components/NotFound";
-import { Link } from "react-router-dom";
 import Footer from "./components/Footer";
 import Profile from "./components/Profile";
-// username: "tickle122",
-// name: "Tom Tickle",
-// avatar_url:
-//   "https://vignette.wikia.nocookie.net/mrmen/images/d/d6/Mr-Tickle-9a.png/revision/latest?cb=20180127221953",
+import ErrorPage from "./components/ErrorPage";
 
 function App() {
   const [err, setErr] = useState(null);
   const [getArticles, setGetArticles] = useState([]);
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [users, setUsers] = useState([]);
-
   const [isLoading, setisLoading] = useState(true);
   const [topics, SetTopics] = useState([]);
 
@@ -38,9 +32,15 @@ function App() {
     });
   }, []);
 
-  if (err) {
-    return <h1>{err}</h1>;
-  }
+  useEffect(() => {
+    // Check if there's a logged-in user stored in localStorage
+    const storedUser = localStorage.getItem("loggedInUser");
+    if (storedUser) {
+      // If there is, set it as the loggedInUser
+      setLoggedInUser(JSON.parse(storedUser));
+    }
+  }, [setLoggedInUser]);
+
   return (
     <UserContext.Provider
       value={{ loggedInUser: loggedInUser, setLoggedInUser: setLoggedInUser }}
@@ -52,7 +52,10 @@ function App() {
       </div>
 
       <Routes>
-        <Route path="*" element={<NotFound />} />
+        <Route
+          path="*"
+          element={<ErrorPage errMsg={"Error 404: page not found"} />}
+        />
         <Route
           path="/"
           element={
@@ -94,15 +97,15 @@ function App() {
             />
           }
         />
-        {/* <Route
-          path="/articles/:topic/:article_id"
-          element={<ArticlePage users={users} />}
-        /> */}
+
         <Route
           path="/articles/:article_id"
           element={<ArticlePage users={users} err={err} setErr={setErr} />}
         />
-        <Route path="/profile/:username" element={<Profile users={users} />} />
+        <Route
+          path="/profile/:username"
+          element={<Profile users={users} err={err} setErr={setErr} />}
+        />
       </Routes>
       <Footer />
     </UserContext.Provider>

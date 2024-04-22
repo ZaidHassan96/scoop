@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import Topics from "./Topics";
-import { useContext } from "react";
 import { UserContext } from "../contexts/User";
+import "../../stylesheets/Navigation.css";
 
 const Navigation = (topics, SetTopics) => {
   const { loggedInUser } = useContext(UserContext);
   const [isTopicsDropdownOpen, setIsTopicsDropdownOpen] = useState(false);
 
-  const topicsArr = (topics.topics.topics);
+  // const topicsArr = topics.topics.topics;
 
   const handleDropdownToggle = () => {
     setIsTopicsDropdownOpen((prev) => !prev);
@@ -24,15 +24,14 @@ const Navigation = (topics, SetTopics) => {
             style={{
               position: "relative",
               marginRight: "1rem",
-              display: "inline-block", // Ensure the dropdown container doesn't take full width
+              display: "inline-block",
             }}
-            // onClick={() => handleDropdownToggle(true)}
             onMouseEnter={() => handleDropdownToggle(false)}
             onMouseLeave={() => handleDropdownToggle(true)}
           >
             <button style={{ width: "120px" }}>Articles ▼</button>
 
-            {isTopicsDropdownOpen && topicsArr.length > 0 &&  (
+            {isTopicsDropdownOpen && topics !== null > 0 && (
               <div
                 style={{
                   position: "absolute",

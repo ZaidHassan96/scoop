@@ -21,42 +21,10 @@
   margin-left: 10px;
 }
 
-/* .card {
-  display: flex;
-  flex-direction: column;
-  padding: 2em;
-  border-bottom: black solid;
-  align-items: center;
-} */
-
-/* h2 {
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-} */
-
 h3 {
   text-align: center;
   align-items: center;
   justify-content: center;
-}
-
-/* .article-body {
-  font-size: 20px;
-  text-align: center;
-  margin-left: 40px;
-  margin-right: 40px;
-  justify-content: start;
-  align-items: start;
-  line-height: 1.5;
-} */
-
-.author-time {
-  display: flex;
-}
-
-.login {
-  margin-right: 5px;
 }
 
 button {
@@ -66,41 +34,7 @@ button {
   background-color: transparent;
 }
 
-.nav-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: solid rgb(147, 149, 151) 4px;
-  padding-bottom: 5px;
-}
-
-.articles-container {
-  background-color: rgb(255, 255, 255);
-}
-
-.topic {
-  text-decoration: none;
-  color: black;
-}
-.topic:hover {
-  text-decoration: underline;
-  color: black;
-}
-
 .loading {
   text-align: center;
   font-size: 2em;
-}
-
-.profile-link {
-  color: black;
-  margin-right: 5px;
-  text-decoration: none;
-}
-
-.login-link {
-  color: black;
-  margin-right: 5px;
-  text-decoration: none;
 }

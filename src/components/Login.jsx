@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { UserContext } from "../contexts/User";
 import { Link } from "react-router-dom";
 import "../../stylesheets/Login.css";
@@ -7,6 +7,7 @@ const Login = ({ users }) => {
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
 
   const handleLogin = (selectedUser) => {
+    localStorage.setItem("loggedInUser", JSON.stringify(selectedUser));
     setLoggedInUser(selectedUser);
   };
 
@@ -19,7 +20,7 @@ const Login = ({ users }) => {
       <div className="container">
         {users.map((user) => {
           return (
-            <div className="user-card">
+            <div className="user-card" key={user.username}>
               <p>{user.username}</p>
               <img
                 src={user.avatar_url}

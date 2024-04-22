@@ -40,7 +40,14 @@
   margin-bottom: 10px;
 }
 
-.comment-form {
+.post-comment-button {
+  background-color: rgba(200, 194, 194, 0.206);
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.post-comment-button:hover {
+  background-color:  rgba(200, 194, 194, 0.499) ;
 }
 
 .comment-list {
