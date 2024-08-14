@@ -4,7 +4,7 @@ import "../../stylesheets/Profile.css";
 import { Link, useParams } from "react-router-dom";
 import ErrorPage from "./ErrorPage";
 
-const Profile = (users, err, setErr) => {
+const Profile = (users, err, setErr, isLoading, setisLoading) => {
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
   const { username } = useParams();
 
@@ -22,6 +22,15 @@ const Profile = (users, err, setErr) => {
     localStorage.removeItem("loggedInUser");
     setLoggedInUser(null);
   };
+
+  if (isLoading) {
+    return (
+      <div className="loading">
+        <Spinner animation="border" variant="dark" />
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   if (!userExists()) {
     return <ErrorPage errMsg={`User does not exist`} />;

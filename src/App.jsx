@@ -104,7 +104,15 @@ function App() {
         />
         <Route
           path="/profile/:username"
-          element={<Profile users={users} err={err} setErr={setErr} />}
+          element={
+            <Profile
+              users={users}
+              err={err}
+              setErr={setErr}
+              isLoading={isLoading}
+              setisLoading={setisLoading}
+            />
+          }
         />
       </Routes>
       <Footer />
