@@ -47,7 +47,9 @@ const Home = ({
     return (
       <div className="loading">
         <Spinner animation="border" variant="dark" />
-        <p>Loading...</p>
+        <p className="initial-load-msg">
+          Initial load may take a moment as the site is hosted on a free tier.
+        </p>
       </div>
     );
   }
